@@ -1,8 +1,4 @@
 {
-  "NM1": {
-    "entrypoint": "final_visuals/tree/main/figure_01/render.py",
-    "input_key": "figures.files.NM1"
-  },
   "NM2": {
     "entrypoint": "final_visuals/tree/figure_library/main/figure_03/figure3_render.py",
     "input_key": "figures.files.NM2"
@@ -43,16 +39,21 @@
     "entrypoint": "final_visuals/tree/figure_library/supplemental/figure_05/render.py",
     "input_key": "figures.files.S7"
   },
-  "S1": {
-    "entrypoint": "final_visuals/supplement_patches/build_s1_workflow.py",
-    "mode": "arguments"
+  "NM1_cohort": {
+    "entrypoint": "final_visuals/tree/figure_library/main/cohort_flow/figure1a_render.py",
+    "mode": "input_tree"
   },
-  "S2": {
-    "entrypoint": "final_visuals/supplement_patches/build_s2_labels.py",
-    "mode": "arguments"
+  "NM1_clinical": {
+    "entrypoint": "final_visuals/tree/figure_library/main/figure_02/figure2_render.py",
+    "mode": "input_tree"
   },
-  "S8": {
-    "entrypoint": "final_visuals/supplement_patches/build_s8_screenshots.py",
-    "mode": "arguments"
+  "S1_workflow": {
+    "entrypoint": "final_visuals/tree/figure_library/main/figure_01/render.py",
+    "mode": "input_tree",
+    "callable": "workflow_panel"
+  },
+  "S2_qc": {
+    "entrypoint": "final_visuals/tree/figure_library/supplemental/figure_01/figureS1_render.py",
+    "mode": "input_tree"
   }
 }

@@ -11,7 +11,7 @@ import tempfile
 
 CODE = Path(__file__).resolve().parents[1]
 CONTRACTS = CODE / 'configuration'
-KINDS = {'input': 'input_config', 'tables': 'tables_config', 'registry': 'source_registry'}
+KINDS = {'input': 'input_config'}
 
 
 def load(path):
@@ -160,13 +160,11 @@ def file_binding_errors(kind, config, data, scope, input_root=None):
     base = external(input_root or config.parent)
     spec = load(CONTRACTS / (KINDS[kind] + '.schema.json'))
     errors = []
-    section = 'paths' if kind == 'input' else 'files' if kind == 'tables' else 'sources'
+    section = 'paths'
     properties = spec['properties'][section]['properties']
     for key, value in data.get(section, {}).items():
         definition = properties.get(key, {})
         if value is None or not applies(definition, scope):
-            continue
-        if kind == 'tables' and definition.get('x-direction') != 'input':
             continue
         if not (base / value).exists():
             errors.append('$.' + section + '.' + key + ': file or directory is unavailable')
@@ -207,22 +205,18 @@ def check(args):
 
 
 def run(args):
-    if not args.input_config and not args.table_config:
-        raise ValueError('Provide --input-config or --table-config')
+    if not args.input_config:
+        raise ValueError('Provide --input-config')
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
     if not command:
         raise ValueError('Provide a command after --')
-    configurations = []
-    for kind, filename, variable in (('input', args.input_config, 'AVATAR_INPUT_CONFIG'), ('tables', args.table_config, 'AVATAR_TABLE_CONFIG')):
-        if filename:
-            config, data, errors = checked(kind, filename, args.scope)
-            if not errors and args.files:
-                errors = file_binding_errors(kind, config, data, args.scope, args.input_root)
-            if errors:
-                print(json.dumps({'valid': False, 'issue_count': len(errors), 'issues': errors[:20]}))
-                return 2
-            configurations.append((kind, config, data, variable))
-    base = configurations[0][1].parent
+    config, data, errors = checked('input', args.input_config, args.scope)
+    if not errors and args.files:
+        errors = file_binding_errors('input', config, data, args.scope, args.input_root)
+    if errors:
+        print(json.dumps({'valid': False, 'issue_count': len(errors), 'issues': errors[:20]}))
+        return 2
+    base = config.parent
     input_root = external(args.input_root or base)
     if not input_root.is_dir():
         raise FileNotFoundError('Input root is unavailable')
@@ -232,13 +226,9 @@ def run(args):
     env.update(AVATAR_PROJECT_DIR=str(input_root), AVATAR_INPUT_ROOT=str(input_root), PYTHONDONTWRITEBYTECODE='1')
     env['PYTHONPATH'] = str(CODE) + (os.pathsep + env['PYTHONPATH'] if env.get('PYTHONPATH') else '')
     with tempfile.TemporaryDirectory(prefix='avatar_config_', dir=workspace) as runtime:
-        for kind, config, data, variable in configurations:
-            if kind == 'tables':
-                env[variable] = str(config)
-            else:
-                path = Path(runtime) / 'input_config.json'
-                path.write_text(json.dumps(clean(data), ensure_ascii=False, indent=2), encoding='utf-8')
-                env[variable] = str(path)
+        path = Path(runtime) / 'input_config.json'
+        path.write_text(json.dumps(clean(data), ensure_ascii=False, indent=2), encoding='utf-8')
+        env['AVATAR_INPUT_CONFIG'] = str(path)
         return subprocess.run(command, cwd=CODE, env=env).returncode
 
 
@@ -283,7 +273,6 @@ def main():
     inspect.set_defaults(function=check)
     execute = actions.add_parser('run', help='Run a command with the configured input environment.')
     execute.add_argument('--input-config', type=Path)
-    execute.add_argument('--table-config', type=Path)
     execute.add_argument('--input-root', type=Path)
     execute.add_argument('--workspace', type=Path)
     execute.add_argument('--scope', choices=scope_choices(), default='all')

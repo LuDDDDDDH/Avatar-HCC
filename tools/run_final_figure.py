@@ -1,6 +1,7 @@
 from pathlib import Path
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import shutil
@@ -51,6 +52,34 @@ def preflight(rows):
              'sha256_match': row['source'].is_file() and digest(row['source']) == row['sha256']}
             for row in rows]
 
+def input_tree_rows(root):
+    if not root.is_dir():
+        raise ValueError('Input tree must be an existing directory')
+    if root.is_relative_to(CODE) or CODE.is_relative_to(root):
+        raise ValueError('Input tree must be separate from the code directory')
+    rows = []
+    for source in sorted(root.rglob('*')):
+        if source.is_symlink():
+            raise ValueError('Input tree must not contain symbolic links')
+        if source.is_file():
+            rows.append({'source': source, 'target': source.relative_to(root),
+                         'sha256': digest(source)})
+    if not rows:
+        raise ValueError('Input tree must contain the configured scientific inputs')
+    return rows
+
+def workflow_panel(entrypoint):
+    spec = importlib.util.spec_from_file_location('avatar_workflow_panel', entrypoint)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    contract = module.load_contract()
+    module.validate_assets()
+    module.PANEL_DIR.mkdir(parents=True, exist_ok=True)
+    canvas = module.build_panel_b(contract)
+    canvas.write(module.B_STEM.with_suffix('.svg'))
+    module.convert_svg_bundle(module.B_STEM)
+
 def adapt_json(value, stage, config):
     if isinstance(value, str):
         normalized = value.replace('\\', '/')
@@ -71,22 +100,25 @@ def adapt_json(value, stage, config):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--invoke-workflow-panel', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--list', action='store_true')
     parser.add_argument('--figure', choices=ENTRIES)
     parser.add_argument('--config', type=Path)
     parser.add_argument('--input-root', type=Path)
+    parser.add_argument('--input-tree', type=Path)
     parser.add_argument('--workdir', type=Path)
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--run', action='store_true')
     args = parser.parse_args()
+    if args.invoke_workflow_panel:
+        workflow_panel(args.invoke_workflow_panel)
+        return
     if args.list:
         print(json.dumps(ENTRIES, indent=2))
         return
     if not args.figure:
         parser.error('--figure is required')
     entry = ENTRIES[args.figure]
-    if entry.get('mode') == 'arguments':
-        parser.error('Use the registered command directly with its asset arguments')
     configured = args.config or os.environ.get('AVATAR_INPUT_CONFIG')
     if not configured:
         parser.error('--config or AVATAR_INPUT_CONFIG is required')
@@ -94,11 +126,27 @@ def main():
         parser.error('Choose --check or --run')
     config_path, config = load_config(configured)
     input_root = args.input_root.expanduser().resolve() if args.input_root else None
-    rows = required(args.figure, config, input_root)
-    report = preflight(rows)
-    all_match = all(row['sha256_match'] for row in report)
-    print(json.dumps({'figure': args.figure, 'inputs_checked': len(report), 'all_inputs_match': all_match,
-                      'missing_or_changed': [row for row in report if not row['sha256_match']]}, indent=2))
+    direct = entry.get('mode') == 'input_tree'
+    if direct:
+        if not args.input_tree:
+            parser.error('--input-tree is required for this scientific source entry')
+        rows = input_tree_rows(args.input_tree.expanduser().resolve())
+        conflicts = [str(row['target']) for row in rows if (TREE / row['target']).exists()]
+        if conflicts:
+            raise ValueError('Input tree conflicts with retained source files: ' + ', '.join(conflicts))
+        report = [{'target': str(row['target']), 'exists': True} for row in rows]
+        all_match = True
+        print(json.dumps({'figure': args.figure, 'input_tree_files': len(rows),
+                          'input_tree_available': True, 'frozen_hashes_checked': False,
+                          'scientific_contracts_checked': False}, indent=2))
+    else:
+        if args.input_tree:
+            parser.error('--input-tree applies only to scientific source entries')
+        rows = required(args.figure, config, input_root)
+        report = preflight(rows)
+        all_match = all(row['sha256_match'] for row in report)
+        print(json.dumps({'figure': args.figure, 'inputs_checked': len(report), 'all_inputs_match': all_match,
+                          'missing_or_changed': [row for row in report if not row['sha256_match']]}, indent=2))
     if not args.run:
         return
     if not all_match:
@@ -131,7 +179,12 @@ def main():
     environment.update(AVATAR_INPUT_CONFIG=str(config_path), AVATAR_FROZEN_INPUT_ROOT=str(stage),
                        AVATAR_PROJECT_DIR=str(stage), AVATAR_INPUT_ROOT=str(stage), MPLBACKEND='Agg', PYTHONDONTWRITEBYTECODE='1')
     environment['PYTHONPATH'] = os.pathsep.join([str(stage), str(stage / 'figure_library'), str(CODE)])
-    result = subprocess.run([sys.executable, str(stage / entry_relative)], cwd=stage, env=environment)
+    if entry.get('callable') == 'workflow_panel':
+        command = [sys.executable, str(Path(__file__).resolve()), '--invoke-workflow-panel',
+                   str(stage / entry_relative)]
+    else:
+        command = [sys.executable, str(stage / entry_relative)]
+    result = subprocess.run(command, cwd=stage, env=environment)
     unchanged = all(digest(Path(path)) == expected for path, expected in original_hashes.items())
     (stage / 'run_status.json').write_text(json.dumps({'figure': args.figure, 'returncode': result.returncode,
         'original_inputs_unchanged': unchanged, 'inputs': report}, indent=2), encoding='utf-8')
