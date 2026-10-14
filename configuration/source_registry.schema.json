@@ -1,0 +1,323 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Avatar-HCC stored table source registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sources"
+  ],
+  "properties": {
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Table_S2_Model_performance",
+        "S3_threshold_metrics",
+        "S4_risk_stratification",
+        "Table_S5_MBP_phenotype",
+        "S6_incremental_summary",
+        "S6_endpoint_excl_agreement",
+        "S8_endpoint_simplex",
+        "S8_concordance_summary",
+        "S8_concordance_patient",
+        "S9_KO_feature_mapping",
+        "S9_metabolite_mapping",
+        "S9_radiomics_feature_map",
+        "S9_metabolite_module_map",
+        "S9_module_SHAP",
+        "S9_axis_scores",
+        "S9_axis_stats",
+        "S9_axis_pairwise",
+        "S9_radiomics_module_scores",
+        "S9_metab_radiomics_links"
+      ],
+      "properties": {
+        "Table_S2_Model_performance": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S3_threshold_metrics": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S4_risk_stratification": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "Table_S5_MBP_phenotype": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S6_incremental_summary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S6_endpoint_excl_agreement": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S8_endpoint_simplex": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S8_concordance_summary": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S8_concordance_patient": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_KO_feature_mapping": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_metabolite_mapping": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_radiomics_feature_map": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_metabolite_module_map": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_module_SHAP": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_axis_scores": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_axis_stats": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_axis_pairwise": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_radiomics_module_scores": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        },
+        "S9_metab_radiomics_links": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "x-kind": "path",
+          "x-required": true,
+          "x-scope": [
+            "tables"
+          ],
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\]).+$",
+          "x-direction": "input",
+          "description": "CSV path resolved relative to the --project-root directory."
+        }
+      }
+    }
+  }
+}

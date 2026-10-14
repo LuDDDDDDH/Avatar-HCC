@@ -1,0 +1,58 @@
+{
+  "NM1": {
+    "entrypoint": "final_visuals/tree/main/figure_01/render.py",
+    "input_key": "figures.files.NM1"
+  },
+  "NM2": {
+    "entrypoint": "final_visuals/tree/figure_library/main/figure_03/figure3_render.py",
+    "input_key": "figures.files.NM2"
+  },
+  "NM3": {
+    "entrypoint": "final_visuals/tree/figure_library/main/figure_04/figure4_render.py",
+    "input_key": "figures.files.NM3"
+  },
+  "NM4": {
+    "entrypoint": "final_visuals/tree/main/figure_04/render.py",
+    "input_key": "figures.files.NM4"
+  },
+  "NM5": {
+    "entrypoint": "final_visuals/tree/main/figure_05/render.py",
+    "input_key": "figures.files.NM5"
+  },
+  "NM6": {
+    "entrypoint": "final_visuals/tree/main/figure_06/render.py",
+    "input_key": "figures.files.NM6"
+  },
+  "S3": {
+    "entrypoint": "final_visuals/tree/figure_library/main/model_architecture/model_architecture_render.py",
+    "input_key": "figures.files.S3"
+  },
+  "S4": {
+    "entrypoint": "final_visuals/tree/figure_library/supplemental/figure_02/figureS2_render.py",
+    "input_key": "figures.files.S4"
+  },
+  "S5": {
+    "entrypoint": "final_visuals/tree/figure_library/supplemental/figure_03/render.py",
+    "input_key": "figures.files.S5"
+  },
+  "S6": {
+    "entrypoint": "final_visuals/tree/figure_library/supplemental/figure_04/render.py",
+    "input_key": "figures.files.S6"
+  },
+  "S7": {
+    "entrypoint": "final_visuals/tree/figure_library/supplemental/figure_05/render.py",
+    "input_key": "figures.files.S7"
+  },
+  "S1": {
+    "entrypoint": "final_visuals/supplement_patches/build_s1_workflow.py",
+    "mode": "arguments"
+  },
+  "S2": {
+    "entrypoint": "final_visuals/supplement_patches/build_s2_labels.py",
+    "mode": "arguments"
+  },
+  "S8": {
+    "entrypoint": "final_visuals/supplement_patches/build_s8_screenshots.py",
+    "mode": "arguments"
+  }
+}

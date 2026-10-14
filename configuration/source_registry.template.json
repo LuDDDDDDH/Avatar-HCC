@@ -1,0 +1,23 @@
+{
+  "sources": {
+    "Table_S2_Model_performance": "inputs/table_001.csv",
+    "S3_threshold_metrics": "inputs/table_002.csv",
+    "S4_risk_stratification": "inputs/table_003.csv",
+    "Table_S5_MBP_phenotype": "inputs/table_004.csv",
+    "S6_incremental_summary": "inputs/table_005.csv",
+    "S6_endpoint_excl_agreement": "inputs/table_006.csv",
+    "S8_endpoint_simplex": "inputs/table_007.csv",
+    "S8_concordance_summary": "inputs/table_008.csv",
+    "S8_concordance_patient": "inputs/table_009.csv",
+    "S9_KO_feature_mapping": "inputs/table_010.csv",
+    "S9_metabolite_mapping": "inputs/table_011.csv",
+    "S9_radiomics_feature_map": "inputs/table_012.csv",
+    "S9_metabolite_module_map": "inputs/table_013.csv",
+    "S9_module_SHAP": "inputs/table_014.csv",
+    "S9_axis_scores": "inputs/table_015.csv",
+    "S9_axis_stats": "inputs/table_016.csv",
+    "S9_axis_pairwise": "inputs/table_017.csv",
+    "S9_radiomics_module_scores": "inputs/table_018.csv",
+    "S9_metab_radiomics_links": "inputs/table_019.csv"
+  }
+}
